@@ -404,25 +404,28 @@
       var navLinks = document.querySelectorAll("nav a");
 
       navLinks.forEach(function (link) {
-        link.addEventListener("click", function (e) {
-          e.preventDefault();
-          navLinks.forEach((l) => l.classList.remove("active"));
-          this.classList.add("active");
-          var targetId = this.getAttribute("href").split("#")[1];
-          var targetElement = document.getElementById(targetId);
-          if (targetElement) {
-            targetElement.scrollIntoView({ behavior: "smooth" });
+        // 只对页面内锚点链接应用preventDefault
+        if (link.getAttribute("href").startsWith("#")) {
+          link.addEventListener("click", function (e) {
+            e.preventDefault();
+            navLinks.forEach((l) => l.classList.remove("active"));
+            this.classList.add("active");
+            var targetId = this.getAttribute("href").split("#")[1];
+            var targetElement = document.getElementById(targetId);
+            if (targetElement) {
+              targetElement.scrollIntoView({ behavior: "smooth" });
 
-            var newUrl =
-              window.location.protocol +
-              "//" +
-              window.location.host +
-              window.location.pathname +
-              "#" +
-              targetId;
-            window.history.pushState({ path: newUrl }, "", newUrl);
-          }
-        });
+              var newUrl =
+                window.location.protocol +
+                "//" +
+                window.location.host +
+                window.location.pathname +
+                "#" +
+                targetId;
+              window.history.pushState({ path: newUrl }, "", newUrl);
+            }
+          });
+        }
       });
 
       function handleHashChange() {
@@ -1301,6 +1304,7 @@
   <footer>
     <p>© 2025 WebNav Hub. 🇺🇦 荣耀属于乌克兰 🇺🇦 坚定地支持乌克兰人民抵抗俄罗斯的侵略。保留所有权利。</p>
     <nav>
+      <a href="https://github.com/mxpus521/ukraine-nav" target="_blank">项目仓库</a>
       <a href="#">隐私政策</a>
       <a href="#">使用条款</a>
       <a href="#">联系我们</a>
